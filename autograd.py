@@ -67,7 +67,7 @@ class Value:
 
     def __pow__(self, other):
         """
-        Calculate the power of a node
+        Calculate the power of a vale
 
         Args:
             other: other: Other value for exponent
@@ -75,7 +75,7 @@ class Value:
         Returns:
             New ``Value`` object with power of the inputs
         """
-        # No need to check if other is a Value, other is a... TODO: check type of other
+        # No need to check if other is a Value, other is a scalar
         return Value(
             data=self.data**other, # Set this nodes data to the power of ``other``
             children=(self, ), # Only one child node,
