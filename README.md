@@ -23,7 +23,7 @@ Latent forest aims to provide an interactive _microscope_ for language model beh
 ---
 
 ### Core Idea
-Ate ach generation step:
+At each generation step:
 1. A model produces a probability distribution over a set of next tokens.
 2. Multipl plausible continuations exist simultaneously.
 3. Sampling selects one path - while all the others are abandoned
@@ -45,13 +45,23 @@ The result is a living map of possibility rather than a single output.
 ### Status
 🚧Early experimental project - still ironing out the kinks!
 
-## Architecture
+## Design Decisions
 ### Model
-The model is inspired heavily by Andrej Karpathy's [microgpt](https://karpathy.github.io/2026/02/12/microgpt/) with some necessary modifications
+The model is inspired by Andrej Karpathy's [MicroGPT](https://karpathy.github.io/2026/02/12/microgpt/) with some necessary modifications.
+
 ### Tokensiser
+> **Initial State:** Andrej Karpathy's MicroGPT uses a very simple letter to token mapping with each token being a lowercase letter from the latin alphabet and one additional token *BOS* to mark the beginning of each sequence.
+> 
+>This is only a placeholder to accelerate the development of the Latent Forest core logic and I will implement a more complex tokeniser at a later date.
+
 Due to the nature of Latent Forest as an experiment and explainability tool, rather than a typical performance based use case, it uses word level tokenisation.
 
 Word level tokenisation splits text into individual words based on whitespace and punctuation. 
 
 **Advantages:** High semantic richness per token and human-readable output.
 **Disadvantages:** Inability to handle unseen words (OOV).
+
+### Training Data
+> **Initial State:** Similar to the tokeniser, we will directly reuse the dataset format from MicroGPT. The dataset consists of a list of 32,000 names in a simple text file, one per line.
+
+The end state for the dataset is still to be determined. Given my compute constraints and the branching nature of the model, texts should be kept incredibly short by modern GPT standards.
