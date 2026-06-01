@@ -4,7 +4,7 @@ Main orchestrator script
 
 from dataset_loader import load_data
 from train import train
-from inference import inference
+from inference import inference, forest_inference
 
 print("Loading data...")
 load_data()
@@ -14,3 +14,8 @@ train()
 
 print("Running inference...")
 inference()
+
+print("Running amended inference")
+for _ in range(20):
+    forest = forest_inference()
+    print(forest,"\n",''.join([token[0] for token in forest]))

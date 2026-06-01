@@ -3,11 +3,12 @@ Model inference script
 """
 
 import random
+import numpy as np
 
 from tokeniser import BOS, vocab_size, uchars
 from model_arch import n_layer, gpt, softmax, block_size
 
-temperature = 0.1  # in (0, 1], control the "creativity" of generated text, low to high
+temperature = 0.3  # in (0, 1], control the "creativity" of generated text, low to high
 
 
 def inference():
@@ -26,3 +27,32 @@ def inference():
                 break
             sample.append(uchars[token_id])
         print(f"sample {sample_idx+1:2d}: {''.join(sample)}")
+
+
+def forest_inference():
+    """
+    The inference mechanism to create a branching tree structure of potential outcomes.
+
+    Returns:
+        A series of tuples, token IDs to probabilities of the most likely token at each stage
+    """
+    # Initialise empty kv
+    keys, values = [[] for _ in range(n_layer)], [[] for _ in range(n_layer)]
+
+    # Start with beginning of string token
+    token_id = BOS
+    sample = []
+
+    for pos_id in range(block_size):
+        logits = gpt(token_id, pos_id, keys, values)
+        probs = softmax([l / temperature for l in logits])
+
+        # Get max index and element in probs
+        probs = [prob.data for prob in probs]
+        token_id = np.argmax(probs)
+        prob = probs[token_id]
+        if token_id == BOS:
+            sample.append((None, prob))
+            break
+        sample.append((uchars[token_id], prob))
+    return sample

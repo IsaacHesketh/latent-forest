@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 certifi = "*"
 black = "*"
+numpy = "*"
 
 [dev-packages]
 

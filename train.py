@@ -14,7 +14,7 @@ def train():
     v = [0.0] * len(params)  # second moment buffer
 
     # Repeat in sequence
-    num_steps = 1000  # Number of training steps
+    num_steps = 250  # Number of training steps
     for step in range(num_steps):
 
         # Take a single document, tokenise, surround with BOS token on both sides
