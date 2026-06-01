@@ -48,9 +48,9 @@ def forest_inference():
         probs = softmax([l / temperature for l in logits])
 
         # Get max index and element in probs
-        probs = [prob.data for prob in probs]
-        token_id = np.argmax(probs)
-        prob = probs[token_id]
+        weights = [prob.data for prob in probs]
+        token_id = random.choices(range(vocab_size), weights=weights)
+        prob = weights[token_id]
         if token_id == BOS:
             sample.append((None, prob))
             break
