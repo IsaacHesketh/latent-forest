@@ -16,6 +16,6 @@ print("Running inference...")
 inference()
 
 print("Running amended inference")
-for _ in range(20):
+for i in range(20):
     forest = forest_inference()
-    print(forest,"\n",''.join([token[0] for token in forest if token[0]]))
+    print(f"Sample {i+1}:\n",forest,"\n",''.join([token[0] for token in forest if token[0]]),"\n")

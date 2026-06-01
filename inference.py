@@ -49,7 +49,7 @@ def forest_inference():
 
         # Get max index and element in probs
         weights = [prob.data for prob in probs]
-        token_id = random.choices(range(vocab_size), weights=weights)
+        token_id = random.choices(range(vocab_size), weights=weights)[0]
         prob = weights[token_id]
         if token_id == BOS:
             sample.append((None, prob))
