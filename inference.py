@@ -56,3 +56,52 @@ def forest_inference():
             break
         sample.append((uchars[token_id], prob))
     return sample
+
+
+class Forest:
+    """
+    Object to hold a model and perform inference
+    """
+
+    def __init__(self):
+        self.keys = [[] for _ in range(n_layer)]
+        self.values = [[] for _ in range(n_layer)]
+
+        self.token_id: int = BOS
+        self.sample: list = []
+
+    def single_run(self, sample):
+        """
+        Inner loop inference function
+
+        Args:
+            sample: Current sample state
+
+        Returns:
+            Intermediate outputs
+        """
+
+        logits = gpt(
+            sample[-1][0] if sample else self.token_id,
+            len(sample),
+            self.keys,
+            self.values
+        )
+
+        probs = softmax([l / temperature for l in logits])
+
+        weights = [prob.data for prob in probs]
+        token_id = random.choices(range(vocab_size), weights=weights)[0]
+
+        prob = weights[token_id]
+        if token_id == BOS:
+            return sample + [(None, prob)]
+        return sample + [(uchars[token_id], prob)]
+
+
+    def inference(self):
+        while len(self.sample) < block_size:
+            self.sample = self.single_run(self.sample)
+
+    def __str__(self):
+        return f"{self.sample}\n{''.join([token[0] for token in self.sample])}"
