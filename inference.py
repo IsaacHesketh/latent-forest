@@ -96,7 +96,7 @@ class Forest:
         prob = weights[token_id]
         if token_id == BOS:
             return sample + [(None, prob)]
-        return sample + [(uchars[token_id], prob)]
+        return sample + [(token_id, prob)]
 
 
     def inference(self):
@@ -104,4 +104,4 @@ class Forest:
             self.sample = self.single_run(self.sample)
 
     def __str__(self):
-        return f"{self.sample}\n{''.join([token[0] for token in self.sample])}"
+        return f"{self.sample}\n{''.join([uchars(token[0]) for token in self.sample])}"
