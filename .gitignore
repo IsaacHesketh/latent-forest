@@ -6,3 +6,6 @@ progress_log.md
 
 # IDE files
 .idea/
+
+# Cache
+__pycache__/
